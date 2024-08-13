@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant user as User
+    participant browser
+    participant server
+
+    user->>browser: Enters note text and clicks "Save"
+    
+    Note right of browser: The browser's JavaScript captures the input and prepares a POST request using Fetch API
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa with note data
+    activate server
+    server-->>browser: { "message": "note created" }
+    deactivate server
+
+    Note right of browser: The browser's JavaScript updates the notes list dynamically without a page reload
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: Updated JSON with new note [{ "content": "New Note", "date": "2024-8-13" }, ... ]
+    deactivate server
+
+    Note right of browser: The SPA JavaScript re-renders the updated list of notes with the new note included
